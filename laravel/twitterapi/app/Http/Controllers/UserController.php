@@ -16,7 +16,6 @@ class UserController extends Controller
     
     
     public function  store(Request $request) {
-        $ran =$request;
         $item = UserName::create($request->all());
         return response()->json([
             'data'=>$item,

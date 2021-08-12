@@ -3,6 +3,10 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
+use App\Http\controllers\ShareController;
+use App\Http\controllers\CommentController;
+use App\Http\controllers\LikeController;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -15,3 +19,6 @@ use App\Http\Controllers\UserController;
 */
 
     Route::apiResource("/user",UserController::class);
+    Route::apiResource('/share',ShareController::class);
+    Route::apiResource('/comment',CommentController::class);
+    Route::apiResource('/like',LikeController::class);

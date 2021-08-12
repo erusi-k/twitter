@@ -1,17 +1,23 @@
 <template>
-    <div>
-        <h2>新規登録</h2>
-        <input type="text" v-model="userName" placeholder="ユーザーネーム">
-        <input type="email" v-model="email" placeholder="メールアドレス">
-        <input type="password" v-model="password" placeholder="パスワード">
-        <button @click="register">登録する</button>
+    <div class="register">
+        <div class="register-menu">
+            <h2>新規登録</h2>
+            <div class="register-menu-area">
+                <input type="text" v-model="userName" placeholder="ユーザーネーム">
+                <input type="email" v-model="email" placeholder="メールアドレス">
+                <input type="password" v-model="password" placeholder="パスワード">
+                <button @click="register">新規登録</button>
+            </div>
+        </div>
         
     </div>
 </template>
 
 <script>
+
 import firebase from '~/plugins/firebase'
 export default {
+    layout:'top',
     data(){
         return {
             userName:null,
@@ -60,3 +66,30 @@ export default {
     }
 
 </script>
+
+<style scoped>
+
+    .register{
+        width:100%;
+    }
+
+    .register-menu{
+        width:40%;
+        background-color:#fff;
+        text-align:center;
+        margin: 100px auto;
+        padding-bottom:20px;
+    }
+    input {
+        width:80%;
+        height:35px;
+        background-color:#fff;
+        border-radius:10px;
+        border:1px solid #999;
+        color:#000;
+    }
+    input,button {
+        display:block;
+        margin:10px auto;
+    }
+</style>

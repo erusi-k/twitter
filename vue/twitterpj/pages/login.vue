@@ -1,18 +1,23 @@
 <template>
-    <div>
-        <h2>ログイン</h2>
-        <input type="email" v-model="email" placeholder="メールアドレス" >
-        <input type="password" v-model="password" placeholder="パスワード">
-        <button @click="login">ログイン</button>
+    <div class="login" >
+        <div class="login-menu">
+            <h2>ログイン</h2>
+            <div class="login-menu_area">
+                <input type="email" v-model="email" placeholder="メールアドレス" >
+                <input type="password" v-model="password" placeholder="パスワード">
+                <button @click="login">ログイン</button>
+            </div>
+        </div>
     </div>
 </template>
 
 <script>
 import firebase from '~/plugins/firebase'
 export default {
+    layout:'top',
     data(){
         return{
-            emali:null,
+            email:null,
             password:null
         }
     },
@@ -49,3 +54,29 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    
+
+    .login-menu{
+        width:40%;
+        background-color:#fff;
+        text-align:center;
+        margin: 100px auto;
+        padding-bottom:20px;
+    }
+    input {
+        width:80%;
+        height:35px;
+        background-color:#fff;
+        border-radius:10px;
+        border:1px solid #999;
+        color:#000;
+    }
+    input,button {
+        display:block;
+        margin:10px auto;
+    }
+    
+    
+</style>
