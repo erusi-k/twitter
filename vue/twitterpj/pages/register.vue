@@ -3,10 +3,21 @@
         <div class="register-menu">
             <h2>新規登録</h2>
             <div class="register-menu-area">
-                <input type="text" v-model="userName" placeholder="ユーザーネーム">
-                <input type="email" v-model="email" placeholder="メールアドレス">
-                <input type="password" v-model="password" placeholder="パスワード">
-                <button @click="register">新規登録</button>
+                <validation-observer ref="obs" v-slot="ObserverProps">
+                    <validation-provider v-slot="ProviderProps" rules="required|max:20">
+                        <input type="text" v-model="userName" placeholder="ユーザーネーム" name="ユーザーネーム">
+                        <div class="error">{{ProviderProps.errors[0]}}</div>
+                    </validation-provider>
+                    <validation-provider v-slot="ProviderProps" rules="required|email">
+                        <input type="email" v-model="email" placeholder="メールアドレス" name="メールアドレス">
+                        <div class="error">{{ProviderProps.errors[0]}}</div>
+                    </validation-provider>
+                    <validation-provider v-slot="ProviderProps" rules="required|min:6">
+                        <input type="password" v-model="password" placeholder="パスワード" name="パスワード">  
+                        <div class="error">{{ProviderProps.errors[0]}}</div>
+                    </validation-provider>    
+                    <button class="btn" @click="register" :disabled="ObserverProps.invalid ||!ObserverProps.validated">新規登録</button>
+                </validation-observer>
             </div>
         </div>
         
@@ -38,8 +49,9 @@ export default {
                         email:this.email
                     };
                     await this.$axios.post("http://127.0.0.1:8000/api/user/",sendData);
-                    
-                    //登録完了表示、ログイン画面に転送
+                    alert('新規登録が完了しました！');
+                    this.$router.push('login');
+
                 })
         
             })

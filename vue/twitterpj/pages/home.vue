@@ -3,18 +3,21 @@
 <p class="home-title" >ホーム</p>
 
     <table v-for="item in contentLists" :key="item.id">
-    <div></div>
     <tr>
         <th>
-            
             {{userName}}
-            <img src="../img/heart.png" class="like_btn" v-if="(item.likeUser===userId)">
-            <img src="../img/profile.png" class="unlike_btn" v-else>
-            {{item.like}}
-
+        </th>
+        <th>
+            <Like :post_id="item.id" :user_id="userId"></Like>
+        </th>
+        <th>
             <img @click="deleteShare(item.id)" src="../img/cross.png">
+        </th>
+        <th>
             <img @click="movePage(item.id,item.share_content)" src="../img/detail.png">
         </th>
+            
+        
     </tr>
     <tr>
         <td>{{item.share_content}}</td>
@@ -22,9 +25,6 @@
     
     </table>
     
-    
-    
-
 </div>    
 </template>
 <script>
@@ -32,13 +32,12 @@
 import firebase from '~/plugins/firebase'
 export default {
 
-    
-    
     data(){
         return {
             userName:null,
             userEmail:null,
             userId:null,
+            shareId:null,
             shareContent:null,
             contentLists:[],
             likeDatas:[]
@@ -47,6 +46,7 @@ export default {
         }
     },
     methods: {
+        //シェア投稿
         async  upContent(){
             if(!this.shareContent) {
                 alert('シェアの内容を入力ください')
@@ -60,22 +60,21 @@ export default {
         this.getShare();
         },
         
+        //シェア取得
         async getShare(){
             var user = Number(this.userId)
         
-            const shareData = await this.$axios.get('http://127.0.0.1:8000/api/share',{params:{user_id:user}});
-            console.log(shareData);
+            const shareData = await this.$axios.get('http://127.0.0.1:8000/api/share',{params:{user_id:this.userId}});
             this.contentLists = shareData.data.data;
-            this.likeDatas = shareData.data.likes;
-            
-
-            
-            
         },
+
+        //シェア削除
         async deleteShare(id){
             await this.$axios.delete('http://127.0.0.1:8000/api/share/'+id);
             this.getShare();
         },
+
+        //ユーザー取得
         async getUser(fn){
             const userData = await this.$axios.get("http://127.0.0.1:8000/api/user/",{params:{email:this.userEmail}});
             userData.data.data.forEach(
@@ -83,7 +82,6 @@ export default {
                     this.userName= item.user;
                     this.userId = item.id;
             },
-            
             );
             this.like = userData,
             await fn();
@@ -102,19 +100,11 @@ export default {
                 });
             });
         },
-
+        //コメント一覧に移動
         movePage(item,content){
             this.$router.push({path:'comment',query:{shareId:item,userId:this.userId,userName:this.userName,shareContent:content}});
         },
 
-        // async getLike(){
-        //     let likeData = [];
-        //     for(item in contentLists){
-        //         likeData.push(await this.$axios.get('http://127.0.0.1:8000/api/like/',{params:{share_id:item.id}}));
-        //     }
-        //     this.likeData = likeData;
-        //     console.log(likeData);
-        // }
     },
     created(){
         firebase.auth().onAuthStateChanged((user) => {
@@ -122,7 +112,9 @@ export default {
                 
                 this.userEmail = user.email;
                 this.getUser(this.getShare);
-                
+            }
+            else{
+                this.$router.push('/');
             }
         }),
         this.$nuxt.$on('requireHelp',()=> {
@@ -136,8 +128,6 @@ export default {
     },
     
 }
-    
-
 
 </script>
 
@@ -163,19 +153,14 @@ export default {
     }
 
     tr {
-        text-align: left;
+        
+        display:flex;
+        justify-content: flex-start;
     }
 
-    th img {
+    th {
+        
         margin-left: 20px;
     }
-    
-    th img:nth-of-type(3) {
-        margin-left:50px;
-    }
-
-    .unlike_btn img{
-        filter: grayscale(100%);
-}
     
 </style>

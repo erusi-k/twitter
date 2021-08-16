@@ -18,11 +18,9 @@
 
 <script>
 
-import ShareButton from '~/components/ShareButton.vue'
+
 export default {
-    components:{
-            ShareButton
-    },
+    
     data() {
         return {
             shareContent:null
@@ -95,6 +93,9 @@ export default {
         display:block;
         margin-top:10px;
         margin-left: auto;
+        color: #fff;
+        background-color: #6633CC;
+        border-radius: 100vh;
     }
 
     .txt {
@@ -102,6 +103,10 @@ export default {
         height:100px;
         border:1px solid #999;
         border-radius:20px;
+    }
+
+    .error{
+        color:#FF0033;
     }
 
     

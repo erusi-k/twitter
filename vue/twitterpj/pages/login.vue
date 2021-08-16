@@ -2,11 +2,19 @@
     <div class="login" >
         <div class="login-menu">
             <h2>ログイン</h2>
-            <div class="login-menu_area">
-                <input type="email" v-model="email" placeholder="メールアドレス" >
-                <input type="password" v-model="password" placeholder="パスワード">
-                <button @click="login">ログイン</button>
-            </div>
+                <validation-observer ref="obs" v-slot="ObserverProps">
+                    <div class="login-menu_area">
+                        <validation-provider v-slot="{errors}" rules="required">
+                            <input type="email" name="メールアドレス" v-model="email" placeholder="メールアドレス" >
+                            <div class="error">{{errors[0]}}</div>
+                        </validation-provider>
+                        <validation-provider v-slot="{errors}" rules="required">
+                            <input type="password" name="パスワード" v-model="password" placeholder="パスワード">
+                            <div class="error">{{errors[0]}}</div>
+                        </validation-provider>
+                            <button class="btn" @click="login" :disabled="ObserverProps.invalid||!ObserverProps.validated">ログイン</button>       
+                    </div>
+                </validation-observer>
         </div>
     </div>
 </template>
@@ -77,6 +85,7 @@ export default {
         display:block;
         margin:10px auto;
     }
+    
     
     
 </style>

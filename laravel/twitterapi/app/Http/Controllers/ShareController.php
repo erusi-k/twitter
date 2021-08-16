@@ -15,46 +15,11 @@ class ShareController extends Controller
      */
     public function index(Request $request)
     {   
-        $likes= [];
-        $userId = $request->user_id;
+        
         $items= Share::where('user_id',$request->user_id)->get();
-        
-        foreach($items as $item) {
-            
-            $like = $item->like()->where('share_id',$item->id)->count();
-            $likes[] = $like;
-            $likeUser = like()->get();
-            
-            $likeUsers[] = $likeUser;
-        }
-        $i=0;
-        foreach($likes as $itm){
-        // for($i=0;$i<5;$i++){  
-            
-            if($i<=count($items)){
-                $items[$i]['like'] = $itm;
-                $i++;
-            }
 
-            // }
-        }
-
-        $i=0;
-        foreach($likeUsers as $itm){
-        // for($i=0;$i<5;$i++){  
-            
-            if($i<=count($items)){
-                $items[$i]['likeUser'] = $itm->user_id;
-                $i++;
-            }
-
-            // }
-        }
-
-        
         return response()->json([
             'data' => $items,
-            'user' => $userId,
         ],200);
     }
     

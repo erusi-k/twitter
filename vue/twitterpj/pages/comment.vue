@@ -5,9 +5,15 @@
             <tr>
                 <th>
                     {{userName}}
-                    <img src="../img/heart.png">
-                    <img @click="deleteShare(item.id)" src="../img/cross.png">
                 </th>
+                <th>
+                    <Like :post_id="shareId" :user_id="userId"></Like>
+                </th>
+                <th>
+                    <img @click="deleteShare(shareId)" src="../img/cross.png">
+                </th>
+                    
+                
             </tr>
             <tr>
                 <td>{{shareData}}</td>
@@ -79,6 +85,10 @@ export default {
         async getComment(){
             const commentData = await this.$axios.get("http://127.0.0.1:8000/api/comment/",{params:{shareId:this.shareId}});
             this.commentContent = commentData.data.data;
+        },
+        async deleteShare(id){
+            await this.$axios.delete('http://127.0.0.1:8000/api/share/'+id);
+            this.getShare();
         },
         
         
